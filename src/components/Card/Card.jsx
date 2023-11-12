@@ -24,12 +24,13 @@ export default function OutlinedCard() {
     <>
       <Box
         sx={{
-          maxWidth: 350,
+          maxWidth: 375,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          margin: "0 auto",
+          margin: "2rem auto",
           gap: "1rem",
+          
         }}
       >
         {state.map((user, index) => {

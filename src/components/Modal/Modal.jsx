@@ -1,11 +1,12 @@
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import Timer from "../Timer/Timer";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { find } from "lodash";
 import { usePostContext } from "../../context/PostContext";
+import moment from "moment";
+import "moment-timezone";
 
 const Modal = () => {
   const [country, setCountry] = useState([]);
@@ -36,7 +37,13 @@ const Modal = () => {
       if (!paused) {
         fetch(`http://worldtimeapi.org/api/timezone/${selectedCountry}`)
           .then((response) => response.json())
-          .then((data) => setCurrentTime(data.datetime));
+          .then((data) => {
+            const time = data.datetime;
+            const formattedTime = moment(time)
+              .tz(selectedCountry)
+              .format("HH:mm:ss");
+              setCurrentTime(formattedTime);
+          });
         //filter datetime for only time
       }
     };
@@ -79,7 +86,7 @@ const Modal = () => {
               <select
                 name="country"
                 id="country"
-                className="w-[130px] bg-slate-500 text-sm"
+                className="w-[130px] p-1 text-sm"
                 onChange={(e) => {
                   setSelectedCountry(e.target.value);
                 }}
@@ -128,16 +135,18 @@ const Modal = () => {
             </div>
           </div>
         </div>
-        <div className="card-post-container flex flex-wrap mx-8 gap-4 my-10 justify-center">
-          {userPostData?.map((post, index) => (
-            <div
-              key={index}
-              className="bg-slate-400 w-full sm:w-1/2 md:w-1/4 p-4"
-            >
-              <p className="text-xl">Post Title: {post.title}</p>
-              <p>Content: {post.body}</p>
-            </div>
-          ))}
+        <div className="card-post-container pl-0 sm:pl-[15rem]">
+          <div className="flex gap-4 flex-wrap m-10 ">
+            {userPostData?.map((post, index) => (
+              <div
+                key={index}
+                className="bg-slate-400 w-full sm:w-1/2 md:w-1/4 p-4"
+              >
+                <p className="text-xl">Post Title: {post.title}</p>
+                <p>Content: {post.body}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
