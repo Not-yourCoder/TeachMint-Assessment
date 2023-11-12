@@ -6,6 +6,7 @@ import { useAppContext } from "../../context/AppContext";
 import { usePostContext } from "../../context/PostContext";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { PacmanLoader } from "react-spinners";
 
 
 
@@ -18,7 +19,7 @@ export default function OutlinedCard() {
   const [postData, setPostData] = useState(null);
 
   if (!state || state.length === 0)
-    return <h1 className="text-2xl">Loading...</h1>;
+    return <div className="flex justify-center items-center h-[100vh]"><PacmanLoader color="#0e0403" /></div>;
 
   return (
     <>
